@@ -175,14 +175,19 @@ namespace GenieClient
 
         private void EditNote_Click(object sender, EventArgs e)
         {
+            if (!_profiles.Visible)
+            {
+                MessageBox.Show("Please toggle the view to edit and display notes.", "Wrong View", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
 
-            if (_profiles.SelectedNode.Level == 2)
+            if (_profiles.SelectedNode is not null && _profiles.SelectedNode.Level == 2)
             {
                 int noteStart = _profiles.SelectedNode.Text.IndexOf(" - ");
                 string noteText = "";
                 if (noteStart > 0) noteText = _profiles.SelectedNode.Text.Substring(noteStart + 3).Trim();
                 My.MyProject.Forms.DialogProfileNote.NoteText = noteText;
-                if (My.MyProject.Forms.DialogProfileNote.ShowDialog(Parent) == DialogResult.OK)
+                if (My.MyProject.Forms.DialogProfileNote.ShowDialog(this) == DialogResult.OK)
                 {
                     string note = My.MyProject.Forms.DialogProfileNote.NoteText;
                     string profileText = _profiles.SelectedNode.Name;
