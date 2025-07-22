@@ -1253,6 +1253,8 @@ namespace GenieClient.Genie
         private bool m_bPresetThoughtOutput = false;
         private bool m_bStatusPromptEnabled = false;
 
+        private static Regex m_RoomNameRegex = new Regex(@"\[(?<roomname>[^\]]+)\](?: \((?<roomuid>\d+|[*]{2})\))?");
+
         private string ProcessXMLNodeElement(XmlNode oXmlNode)
         {
             string sReturn = string.Empty;
@@ -1399,17 +1401,23 @@ namespace GenieClient.Genie
 
                                 case "room":
                                     {
+                                        m_sRoomUid = "0";
+
                                         string argstrAttributeName4 = "subtitle";
                                         m_sRoomTitle = GetAttributeData(oXmlNode, argstrAttributeName4);
-                                        if (m_sRoomTitle.StartsWith(" - "))
-                                            m_sRoomUid = "0";
 
-                                        Regex m_RoomNameRegex = new Regex(@"\[(?<roomname>[^\]]+)\](?: \((?<roomuid>\d+)\))?");
+                                        // If flag showroomid is off then roomtitle is presented as [xxxx,xxxx]
+                                        // if flag showroomid is on and room has a DR applied id number, then roomtitle is presented as [xxxx,xxxx] (ddddd)
+                                        // if flag showroomid is on and room has NOT DR applied id number, then roomtitle is presented as [xxxx,xxxx] (**)
+
                                         System.Text.RegularExpressions.Match o_Match = m_RoomNameRegex.Match(m_sRoomTitle);
                                         if (o_Match.Success)
                                         {
                                             m_sRoomTitle = o_Match.Groups["roomname"].Value;
-                                            m_sRoomUid = o_Match.Groups["roomuid"].Success ? o_Match.Groups["roomuid"].Value : "0";
+                                            if (o_Match.Groups["roomuid"].Success && !o_Match.Groups["roomuid"].Value.Equals("**"))
+                                            {
+                                                m_sRoomUid = o_Match.Groups["roomuid"].Value;
+                                            }
                                         }
                                         else
                                         {
