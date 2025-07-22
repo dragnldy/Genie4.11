@@ -81,11 +81,11 @@ namespace GenieClient
             _Cancel_Button.Text = "Cancel";
             _Cancel_Button.Click += Cancel_Button_Click;
             // 
-            // _TextBoxName
+            // _TextBoxNote
             // 
             _TextBoxNote.Location = new Point(18, 29);
             _TextBoxNote.Margin = new Padding(4, 3, 4, 3);
-            _TextBoxNote.Name = "_TextBoxName";
+            _TextBoxNote.Name = "_TextBoxNote";
             _TextBoxNote.Size = new Size(387, 23);
             _TextBoxNote.TabIndex = 0;
             // 
@@ -117,6 +117,7 @@ namespace GenieClient
             ShowInTaskbar = false;
             StartPosition = FormStartPosition.CenterParent;
             Text = "Profile Note";
+            TopMost = true;
             _TableLayoutPanel1.ResumeLayout(false);
             ResumeLayout(false);
             PerformLayout();
