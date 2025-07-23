@@ -10,9 +10,8 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Xml;
-using Microsoft.VisualBasic;
-using Microsoft.VisualBasic.CompilerServices;
 using System.IO;
+using Emulators;
 
 namespace GenieClient.Genie
 {

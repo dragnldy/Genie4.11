@@ -28,6 +28,7 @@ namespace Emulators
             if (value == null) return Constants.vbNullChar;
             if (value is char c) return c;
             if (value is string str && str.Length > 0) return str[0];
+            if (value is string str2 && str2.Length == 0) return Constants.vbNullChar;
             if (value is int i && i >= 0 && i <= 65535) return (char)i;
             throw new InvalidCastException($"Cannot convert {value.GetType()} to Char.");
         }
@@ -152,6 +153,54 @@ namespace Emulators
             return string.Empty;
         }
 
+    }
+    public static class Strings
+    {
+        public static int Len(string str)
+        {
+            return str?.Length ?? 0;
+        }
+        //public static string Trim(string str)
+        //{
+        //    return str?.Trim() ?? string.Empty;
+        //}
+        //public static string LTrim(string str)
+        //{
+        //    return str?.TrimStart() ?? string.Empty;
+        //}
+        //public static string RTrim(string str)
+        //{
+        //    return str?.TrimEnd() ?? string.Empty;
+        //}
+    }
+    public static class Operators
+    {
+        public static bool ConditionalCompareObjectEqual(object left, object right, bool caseSensitive = true)
+        {
+            if (left == null && right == null) return true;
+            if (left == null || right == null) return false;
+            if (left is string leftStr && right is string rightStr)
+            {
+                return caseSensitive ? leftStr.Equals(rightStr) : leftStr.Equals(rightStr, StringComparison.OrdinalIgnoreCase);
+            }
+            return left.Equals(right);
+        }
+        public static bool And(bool left, bool right)
+        {
+            return left && right;
+        }
+        public static bool Or(bool left, bool right)
+        {
+            return left || right;
+        }
+        public static bool Not(bool value)
+        {
+            return !value;
+        }
+        public static bool Xor(bool left, bool right)
+        {
+            return left ^ right;
+        }
     }
     public enum  MsgBoxResult
     {

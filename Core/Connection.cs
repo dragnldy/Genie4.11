@@ -5,10 +5,8 @@ using System.Net;
 using System.Net.Sockets;
 using System.Net.Security;
 using System.Security.Authentication;
-using System.Text.RegularExpressions;
 using System.Text;
-using Microsoft.VisualBasic;
-using Microsoft.VisualBasic.CompilerServices;
+using Emulators;
 
 namespace GenieClient.Genie
 {
