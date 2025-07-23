@@ -1,4 +1,7 @@
-﻿using System;
+﻿using GenieClient.Forms;
+using Microsoft.VisualBasic;
+using Microsoft.VisualBasic.CompilerServices;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -6,16 +9,10 @@ using System.Drawing;
 using System.IO;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-using System.Speech.Synthesis;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Accessibility;
-using GenieClient.Forms;
-using GenieClient.Genie;
-using Microsoft.VisualBasic;
-using Microsoft.VisualBasic.CompilerServices;
 
 namespace GenieClient
 {
@@ -45,7 +42,7 @@ namespace GenieClient
             LocalDirectory.CheckUserDirectory();
             bool bCustomConfigFile = false;
             var al = new ArrayList();
-            al = Utility.ParseArgs(Interaction.Command());
+            al = Utility.ParseArgs(Emulators.Interaction.Command());
             foreach (string cmd in al)
             {
                 switch (cmd)
@@ -1883,7 +1880,7 @@ namespace GenieClient
                 }
             }
 
-            sDir = FileSystem.Dir(sPattern + $"*.{m_oGlobals.Config.ScriptExtension}", Constants.vbArchive);
+            sDir = FileSystem.Dir(sPattern + $"*.{m_oGlobals.Config.ScriptExtension}"/*, Constants.vbArchive */);
             while (!string.IsNullOrEmpty(sDir))
             {
                 i += 1;

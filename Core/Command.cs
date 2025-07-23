@@ -1,14 +1,14 @@
 ﻿using System;
-using System.Threading.Tasks;
 using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Runtime.InteropServices;
-using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
-using Microsoft.VisualBasic;
-using Microsoft.VisualBasic.CompilerServices;
+using Emulators;
+//using Microsoft.VisualBasic;
+//using Microsoft.VisualBasic.CompilerServices;
 // Imports Jint
 
 namespace GenieClient.Genie
@@ -261,7 +261,7 @@ namespace GenieClient.Genie
                         {
                             if (Conversions.ToString(oArgs[0]).Length > 0)
                             {
-                                var switchExpr = Conversions.ToString(oArgs[0]).Substring(1).ToLower();
+                                string switchExpr = Conversions.ToString(oArgs[0]).Substring(1).ToLower();
                                 switch (switchExpr)
                                 {
                                     case "echo":
@@ -1299,7 +1299,8 @@ namespace GenieClient.Genie
 
                                                         case "edit":
                                                             {
-                                                                Interaction.Shell("\"" + oGlobals.Config.sEditor + "\" \"" + oGlobals.Config.ConfigProfileDir + @"\classes.cfg""", AppWinStyle.NormalFocus, false);
+                                                                Interaction.Shell("\"" + oGlobals.Config.sEditor + "\" \"" + oGlobals.Config.ConfigProfileDir + @"\classes.cfg""", 
+                                                                    AppWinStyle.NormalFocus, false);
                                                                 break;
                                                             }
 
@@ -2514,7 +2515,8 @@ namespace GenieClient.Genie
 
                                     default:
                                         {
-                                            if (Conversions.ToString(oArgs[0]).Trim().StartsWith("#") == true && ColorCode.IsHexString(Conversions.ToString(oArgs[0]).Trim()) == true)
+                                            if (Conversions.ToString(oArgs[0]).Trim().StartsWith("#") == true && 
+                                                ColorCode.IsHexString(Conversions.ToString(oArgs[0]).Trim()) == true)
                                             {
                                                 // Hex Code
                                                 sResult = sRow;
