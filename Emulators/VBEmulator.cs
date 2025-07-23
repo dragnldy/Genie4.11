@@ -75,6 +75,16 @@ namespace Emulators
     }
     public static class Information
     {
+        public static int UBound(Array array, int dimension = 1)
+        {
+            if (array == null) return -1;
+            if (dimension < 1 || dimension > array.Rank)
+            {
+                throw new ArgumentOutOfRangeException(nameof(dimension), "Dimension must be between 1 and the rank of the array.");
+            }
+            return array.GetLength(dimension - 1) - 1; // UBound is inclusive
+        }
+
         public static bool IsNumeric(object value)
         {
             if (value == null) return false;

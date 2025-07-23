@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Threading;
-using Microsoft.VisualBasic;
+using Emulators;
 
 namespace GenieClient.Genie
 {

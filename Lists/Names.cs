@@ -3,7 +3,7 @@ using System.Collections;
 using System.Drawing;
 using System.IO;
 using System.Text.RegularExpressions;
-using Microsoft.VisualBasic;
+using Emulators;
 
 namespace GenieClient.Genie
 {

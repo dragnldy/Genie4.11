@@ -2,8 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
-using Microsoft.VisualBasic;
-using Microsoft.VisualBasic.CompilerServices;
+using Emulators;
 
 namespace GenieClient.Genie
 {
