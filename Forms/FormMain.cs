@@ -1510,12 +1510,24 @@ namespace GenieClient
         {
             foreach (object oPlugin in m_oGlobals.PluginList)
             {
-                if (oPlugin is GeniePlugin.Interfaces.IPlugin)
+                if (oPlugin is GeniePlugin.Interfaces.IPlugin iPlugin)
                 {
                     try
                     {
-                        if ((oPlugin as GeniePlugin.Interfaces.IPlugin).Enabled)
-                            (oPlugin as GeniePlugin.Interfaces.IPlugin).ParseXML(sXML);
+                        if (iPlugin.Enabled)
+                        {
+                            if (iPlugin.Name == "Dynamic Windows")
+                            {
+                                if (!sXML.Contains("\"injuries\""))
+                                {
+                                    iPlugin.ParseXML(sXML);
+                                }
+                            }
+                            else
+                            {
+                                iPlugin.ParseXML(sXML);
+                            }
+                        }
                     }
                     /* TODO ERROR: Skipped IfDirectiveTrivia */
                     catch (Exception ex)
