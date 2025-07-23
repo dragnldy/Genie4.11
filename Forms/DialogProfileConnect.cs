@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.Eventing.Reader;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -15,17 +16,32 @@ namespace GenieClient
         public DialogProfileConnect()
         {
             InitializeComponent();
+            EditNote.Enabled = false;
+            _OK_Button.Enabled = false;
         }
 
         private void OK_Button_Click(object sender, EventArgs e)
         {
-            OK_Close();
+                OK_Close();
         }
 
+        private bool Ok2Close()
+        {
+            if (ListBoxProfiles.SelectedItem is null)
+            {
+                Interaction.Beep();
+                MessageBox.Show("Please select a profile to connect.", "No Profile Selected", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return false;
+            }
+            return true;
+        }
         private void OK_Close()
         {
-            DialogResult = DialogResult.OK;
-            Close();
+            if (Ok2Close())
+            {
+                DialogResult = DialogResult.OK;
+                Close();
+            }
         }
 
         private void Cancel_Button_Click(object sender, EventArgs e)
@@ -53,12 +69,44 @@ namespace GenieClient
                 }
             }
         }
-
+        public string ControlWithFocus { get; set; }
         private void ListBoxProfiles_MouseDoubleClick(object sender, MouseEventArgs e)
         {
-            OK_Close();
+                OK_Close();
+        }
+        private void ListBoxProfiles_MouseClick(object sender, MouseEventArgs e)
+        {
+            _OK_Button.Enabled = ListBoxProfiles.SelectedItem is not null;
         }
 
+        private void ListBoxProfiles_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (ControlWithFocus  == ListBoxProfiles.Name &&
+                ListBoxProfiles.SelectedItem is not null)
+            {
+                string selectedProfile = ListBoxProfiles.SelectedItem.ToString();
+                // Find the corresponding TreeNode in the TreeView
+                bool found = false;
+                foreach (TreeNode node in _profiles.Nodes)
+                {
+                    foreach (TreeNode childNode in node.Nodes)
+                    {
+                        TreeNode foundNode = childNode.Nodes
+                            .Cast<TreeNode>()
+                            .FirstOrDefault(n => n.Name == selectedProfile);
+                        if (foundNode != null)
+                        {
+                            _profiles.SelectedNode = foundNode;
+                            _profiles.SelectedNode.EnsureVisible();
+                            found = true;
+                            break;
+                        }
+                    }
+                    if (found) break;
+                }
+            }
+            _OK_Button.Enabled = ListBoxProfiles.SelectedItem is not null;
+        }
         private string m_sConfigDir = string.Empty;
         public bool ClassicConnect { get; set; }
         public string ConfigDir
@@ -79,6 +127,8 @@ namespace GenieClient
             if (Visible == true)
             {
                 _profiles.Visible = !ClassicConnect;
+                ControlWithFocus = _profiles.Visible ? _profiles.Name : ListBoxProfiles.Name;
+
                 string[] profiles = Directory.GetFiles(m_sConfigDir + @"\Profiles\", "*.xml");
                 ListBoxProfiles.Items.Clear();
                 _profiles.Nodes.Clear();
@@ -114,22 +164,6 @@ namespace GenieClient
                 if(_profiles.Nodes.Count > 0) _profiles.Nodes[0].EnsureVisible(); //this will scroll the window to the top of the list
 
             }
-
-
-
-        }
-        private string GetValue(string element, string profileContents)
-        {
-            int start = profileContents.IndexOf(element + "=");
-            string returnValue = string.Empty;
-            if(start > 0)
-            {
-                start += element.Length + 2;
-                int end = profileContents.IndexOf('"', start);
-                returnValue = profileContents.Substring(start, end - start);
-            }
-            if (string.IsNullOrEmpty(returnValue)) returnValue = $"{element} Missing";
-            return returnValue;
         }
         private void ListBoxProfiles_KeyDown(object sender, KeyEventArgs e)
         {
@@ -141,11 +175,30 @@ namespace GenieClient
             {
                 Cancel_Close();
             }
+            else
+            {
+                // Handle other key events if necessary
+                e.Handled = true; // signal that the key event has been handled
+                Interaction.Beep();
+            }
         }
 
         private void ToggleView_Click(object sender, EventArgs e)
         {
             _profiles.Visible = !_profiles.Visible;
+            if (_profiles.Visible)
+            {
+                _OK_Button.Enabled = _profiles.SelectedNode is not null && _profiles.SelectedNode.Level == 2;
+                EditNote.Enabled = _OK_Button.Enabled;
+                _profiles.Focus();
+                ControlWithFocus = _profiles.Name;
+            }
+            else
+            {
+                _OK_Button.Enabled = ListBoxProfiles.SelectedItem is not null;
+                EditNote.Enabled = false;
+                ControlWithFocus = ListBoxProfiles.Name;
+            }
         }
 
         private void _profiles_AfterSelect(object sender, TreeViewEventArgs e)
@@ -153,6 +206,14 @@ namespace GenieClient
             if (e.Node.Level == 2)
             {
                 ListBoxProfiles.SelectedItem = e.Node.Name;
+                EditNote.Enabled = true;
+                _OK_Button.Enabled = true;
+            }
+            else
+            {
+                EditNote.Enabled = false;
+                _OK_Button.Enabled = false;
+                ListBoxProfiles.SelectedItem = null; // Clear the selection in ListBoxProfiles
             }
         }
 
@@ -167,9 +228,9 @@ namespace GenieClient
                 Cancel_Close();
             }
         }
-
         private void _profiles_DoubleClick(object sender, EventArgs e)
         {
+            // We will check to see if profile is selected before closing
             OK_Close();
         }
 

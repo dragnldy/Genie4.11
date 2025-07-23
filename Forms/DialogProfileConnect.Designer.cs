@@ -66,13 +66,14 @@ namespace GenieClient
             // 
             // _profiles
             // 
-            _profiles.Location = new Point(4, 19);
+            _profiles.Location = new Point(7, 22);
             _profiles.Name = "_profiles";
             _profiles.Size = new Size(409, 276);
             _profiles.TabIndex = 1;
             _profiles.AfterSelect += _profiles_AfterSelect;
             _profiles.DoubleClick += _profiles_DoubleClick;
             _profiles.KeyDown += _profiles_KeyDown;
+            _profiles.HideSelection = false;
             // 
             // _ListBoxProfiles
             // 
@@ -84,7 +85,8 @@ namespace GenieClient
             _ListBoxProfiles.Name = "_ListBoxProfiles";
             _ListBoxProfiles.Size = new Size(408, 276);
             _ListBoxProfiles.TabIndex = 0;
-            _ListBoxProfiles.KeyDown += ListBoxProfiles_KeyDown;
+            _ListBoxProfiles.MouseClick += ListBoxProfiles_MouseClick;
+            _ListBoxProfiles.SelectedIndexChanged += ListBoxProfiles_SelectedIndexChanged;
             _ListBoxProfiles.MouseDoubleClick += ListBoxProfiles_MouseDoubleClick;
             // 
             // _Cancel_Button
