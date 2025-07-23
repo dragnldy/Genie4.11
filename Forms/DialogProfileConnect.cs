@@ -104,6 +104,7 @@ namespace GenieClient
                     }
                     if (found) break;
                 }
+                EditNote.Enabled = false;
             }
             _OK_Button.Enabled = ListBoxProfiles.SelectedItem is not null;
         }
