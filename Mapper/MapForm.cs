@@ -4,9 +4,8 @@ using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 using System.Xml;
-using Microsoft.VisualBasic;
-using Microsoft.VisualBasic.CompilerServices;
 using static GenieClient.My.MyProject;
+using Emulators;
 
 namespace GenieClient.Mapper
 {

@@ -1,6 +1,4 @@
 ﻿using GenieClient.Forms;
-using Microsoft.VisualBasic;
-using Microsoft.VisualBasic.CompilerServices;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -13,6 +11,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Emulators;
 
 namespace GenieClient
 {
@@ -1826,7 +1825,6 @@ namespace GenieClient
 
         public void ListScripts(string sPattern)
         {
-            string sFile;
             int i = 0;
 
             // Run through all files in a directory
@@ -1846,14 +1844,13 @@ namespace GenieClient
                 }
             }
 
-            sFile = FileSystem.Dir(sPattern);
-            while (!string.IsNullOrEmpty(sFile))
+            IEnumerable<string> sFiles = FileSystem.Dir(sPattern);
+            foreach (string sFile in sFiles)
             {
                 i += 1;
                 string argsText1 = Constants.vbTab + sFile + System.Environment.NewLine;
                 Genie.Game.WindowTarget argoTargetWindow1 = Genie.Game.WindowTarget.Main;
                 AddText(argsText1, oTargetWindow: argoTargetWindow1);
-                sFile = FileSystem.Dir();
             }
 
             string argsText2 = System.Environment.NewLine + "Found " + i + " files." + System.Environment.NewLine;
@@ -1863,8 +1860,6 @@ namespace GenieClient
 
         public string FindScript(string sPattern)
         {
-            string sDir = string.Empty;
-            string sFile = string.Empty;
             string sMin = string.Empty;
             int i = 0;
             if (sPattern.IndexOf(@"\") == -1)
@@ -1880,27 +1875,12 @@ namespace GenieClient
                 }
             }
 
-            sDir = FileSystem.Dir(sPattern + $"*.{m_oGlobals.Config.ScriptExtension}"/*, Constants.vbArchive */);
-            while (!string.IsNullOrEmpty(sDir))
-            {
-                i += 1;
-                sFile = sDir;
+            IEnumerable<string> sFiles = FileSystem.Dir(sPattern + $"*.{m_oGlobals.Config.ScriptExtension}"/*, Constants.vbArchive */);
+            foreach (string sFile in sFiles)
+            { 
                 sMin = FindMinString(sMin, sFile);
-                sDir = FileSystem.Dir();
             }
-
-            if (i == 1)
-            {
-                return sFile.ToLower().Replace($".{m_oGlobals.Config.ScriptExtension}", "") + " ";
-            }
-            else if (Strings.Len(sMin) > 0)
-            {
-                return sMin;
-            }
-            else
-            {
-                return "";
-            }
+            return sMin.ToLower().Replace($".{m_oGlobals.Config.ScriptExtension}", "") + " ";
         }
 
         private string FindMinString(string s1, string s2)

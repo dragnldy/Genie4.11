@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics.Eventing.Reader;
+﻿using GenieClient.Genie;
+using System;
 using System.IO;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System.Windows.Forms;
-using System.Xml;
-using GenieClient.Genie;
-using Microsoft.VisualBasic;
+using Emulators;
 
 namespace GenieClient
 {

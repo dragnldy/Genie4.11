@@ -1,7 +1,8 @@
-﻿using GenieClient.Genie;
-using Microsoft.VisualBasic;
+﻿
 using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.IO;
 using System.Windows.Forms;
 
 namespace Emulators
@@ -324,5 +325,13 @@ namespace Emulators
         //public const int vbDefaultButton1 = 0;
         //public const int vbDefaultButton2 = 256;
         //public const int vbDefaultButton3 = 512;
+    }
+
+    public static class FileSystem
+    {
+        public static IEnumerable<string> Dir(string searchPattern = "*.*")
+        {
+            return Directory.EnumerateFiles(searchPattern);
+        }
     }
 }

@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections;
+﻿using GeniePlugin.Interfaces;
+using System;
 using System.Collections.ObjectModel;
 using System.Windows.Forms;
-using GeniePlugin.Interfaces;
 
 namespace GenieClient
 {
