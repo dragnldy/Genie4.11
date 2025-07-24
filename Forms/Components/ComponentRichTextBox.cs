@@ -1,20 +1,12 @@
-﻿using System;
-using System.Collections;
+﻿using GenieClient.Genie;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Drawing.Imaging;
-using System.IO;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
-using GenieClient.Genie;
-using Jint.Debugger;
-using Microsoft.VisualBasic;
-using Microsoft.VisualBasic.CompilerServices;
 using static GenieClient.Genie.Globals;
+using Emulators;
 
 namespace GenieClient
 {
@@ -203,11 +195,12 @@ namespace GenieClient
                 {
                     if (sText.StartsWith(" "))
                     {
-                        return "[" + Strings.FormatDateTime(DateAndTime.Now, DateFormat.ShortTime) + "]";
+                        return "[" + Strings.FormatDateTime(DateTime.Now, "ShortTime") + "]";
+
                     }
                     else
                     {
-                        return "[" + Strings.FormatDateTime(DateAndTime.Now, DateFormat.ShortTime) + "] ";
+                        return "[" + Strings.FormatDateTime(DateTime.Now, "ShortTime") + "] ";
                     }
                 }
             }

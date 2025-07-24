@@ -62,6 +62,14 @@ namespace Emulators
             }
             throw new InvalidCastException($"Cannot convert {value.GetType()} to Boolean.");
         }
+        public static uint ToUInteger(object value)
+        {
+            if (value == null) return 0;
+            if (value is int i) return (uint)i;
+            if (value is double d) return (uint)Math.Round(d, 0);
+            if (value is string str && int.TryParse(str, out i)) return (uint)i;
+            throw new InvalidCastException($"Cannot convert {value.GetType()} to Integer.");
+        }
         public static int ToInteger(object value)
         {
             if (value == null) return 0;
