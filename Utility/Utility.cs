@@ -1,16 +1,16 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Net.Security;
+using System.Runtime.InteropServices;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading;
 using System.Threading.Tasks;
-using System.Runtime.InteropServices;
-using Microsoft.VisualBasic;
-using Microsoft.VisualBasic.CompilerServices;
+using Emulators;
 
 
 
@@ -21,7 +21,7 @@ namespace GenieClient
     {
         public static string GetTimeStamp()
         {
-            return "[" + Strings.FormatDateTime(DateAndTime.Now, DateFormat.ShortTime) + "]";
+            return "[" + Strings.FormatDateTime(DateTime.Now, "ShortTime") + "]";
         }
 
         public static void OpenBrowser(string url)
@@ -312,53 +312,6 @@ namespace GenieClient
             var span = oDateEnd - oDateStart;
             return span.TotalMilliseconds;
         }
-
-        // Public Shared Function SafeSplit(BysInput As String, BycSplitChar As Char) As ArrayList
-        // Dim oList As New ArrayList()
-
-        // Dim bInsideString As Boolean = False
-        // Dim cInsideStringChar As Char
-        // Dim iBracketDepth As Integer = 0
-        // Dim bPreviousWasEscapeChar As Boolean = False
-
-        // Dim ch As Char
-        // Dim l As Integer = 0
-        // Dim sp As Integer = 0
-
-        // For cp As Integer = 0 To sInput.Length - 1
-        // ch = sInput.Chars(cp)
-
-        // If bInsideString = True Then
-        // If ch = cInsideStringChar Then
-        // bInsideString = False
-        // End If
-        // ElseIf (ch = """"c) And bPreviousWasEscapeChar = False Then '  Or ch = "'"c
-        // bInsideString = True
-        // cInsideStringChar = ch
-        // ElseIf ch = cSplitChar And bPreviousWasEscapeChar = False Then
-        // If iBracketDepth = 0 Then
-        // l = (cp - sp)
-        // If l > 0 Then
-        // oList.Add(sInput.Substring(sp, l))
-        // End If
-        // sp = cp + 1 ' +1 So we don't get the split char
-        // End If
-        // End If
-
-        // If ch = "\"c Then
-        // bPreviousWasEscapeChar = Not bPreviousWasEscapeChar
-        // Else
-        // bPreviousWasEscapeChar = False
-        // End If
-        // Next
-
-        // l = (sInput.Length - sp)
-        // If l > 0 Then
-        // oList.Add(sInput.Substring(sp))
-        // End If
-
-        // Return oList
-        // End Function
 
         public static string ArrayToString(ArrayList oList)
         {
@@ -810,12 +763,10 @@ namespace GenieClient
         {
             try
             {
-                string sFile;
-                sFile = FileSystem.Dir(LocalDirectory.Path + @"\Config\*.layout");
-                while (!string.IsNullOrEmpty(sFile))
+                IEnumerable<string> files = Directory.EnumerateFiles(LocalDirectory.Path + @"\Config");
+                foreach (string file in files.Where(n => n.EndsWith(".layout")))
                 {
-                    MoveFile(LocalDirectory.Path + @"\Config\" + sFile, LocalDirectory.Path + @"\Config\Layout\" + sFile);
-                    sFile = FileSystem.Dir();
+                    MoveFile(file, LocalDirectory.Path + @"\Config\Layout\" + file);
                 }
             }
             #pragma warning disable CS0168

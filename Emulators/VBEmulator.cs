@@ -1,4 +1,5 @@
 ﻿using GenieClient.Genie;
+using Microsoft.VisualBasic;
 using System;
 using System.Collections;
 using System.Windows.Forms;
@@ -14,8 +15,24 @@ namespace Emulators
         MinimizedNoFocus,
         NormalNoFocus
     }
+    public static class Conversion
+    {
+        public static string Hex(byte value)
+        {
+            return value.ToString("X2");
+        }
+
+    }
     public static class Conversions
     {
+        public static byte ToByte(object value)
+        {
+            if (value == null) return 0;
+            if (value is byte b) return b;
+            if (value is int i && i >= 0 && i <= 255) return (byte)i;
+            if (value is string str && byte.TryParse(str, out b)) return b;
+            throw new InvalidCastException($"Cannot convert {value.GetType()} to Byte.");
+        }
         public static DateTime ToDate(object value)
         {
             if (value == null) return DateTime.MinValue;
@@ -195,6 +212,19 @@ namespace Emulators
         public static int Len(string str)
         {
             return str?.Length ?? 0;
+        }
+        public static string FormatDateTime(DateTime date, string format)
+        {
+            
+            string format2use = format switch
+            {
+                "ShortDate" => "MM/dd/yyyy",
+                "LongDate" => "dddd, MMMM dd, yyyy",
+                "ShortTime" => "HH:mm",
+                "LongTime" => "hh:mm:ss tt",
+                _ => format
+            }; 
+            return date.ToString(format2use);
         }
         //public static string Trim(string str)
         //{

@@ -5,8 +5,7 @@ using System;
 using System.Collections;
 using System.Drawing;
 using System.Runtime.InteropServices;
-using Microsoft.VisualBasic;
-using Microsoft.VisualBasic.CompilerServices;
+using Emulators;
 
 namespace GenieClient
 {
