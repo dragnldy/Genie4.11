@@ -3,8 +3,7 @@ using System.Collections;
 using System.Linq;
 using System.Windows.Forms;
 using GenieClient.Genie;
-using Microsoft.VisualBasic;
-using Microsoft.VisualBasic.CompilerServices;
+using Emulators;
 
 namespace GenieClient
 {
