@@ -1,5 +1,6 @@
 ﻿using GenieClient.Genie;
 using System;
+using System.Collections;
 using System.Windows.Forms;
 
 namespace Emulators
@@ -48,9 +49,27 @@ namespace Emulators
         {
             if (value == null) return 0;
             if (value is int i) return i;
-            if (value is double d) return (int)d;
+            if (value is double d) return (int)Math.Round(d,0);
             if (value is string str && int.TryParse(str, out i)) return i;
             throw new InvalidCastException($"Cannot convert {value.GetType()} to Integer.");
+        }
+        public static long ToLong(object value)
+        {
+            if (value == null) return 0l;
+            if (value is int i) return (long)i;
+            if (value is long l) return l;
+            if (value is double d) return (long)Math.Round(d,0);
+            if (value is string str && long.TryParse(str, out l)) return l;
+            throw new InvalidCastException($"Cannot convert {value.GetType()} to Long.");
+        }
+        public static double ToDouble(object value)
+        {
+            if (value == null) return 0d;
+            if (value is int i) return (double)i;
+            if (value is long l) return (double)l;
+            if (value is double d) return d;
+            if (value is string str && double.TryParse(str, out d)) return d;
+            throw new InvalidCastException($"Cannot convert {value.GetType()} to double.");
         }
         public static string ToString(object c)
         {
@@ -73,6 +92,9 @@ namespace Emulators
             return b ? "True" : "False";
         }
     }
+    public class Collection: ArrayList
+    {
+    }
     public static class Information
     {
         public static int UBound(Array array, int dimension = 1)
@@ -92,6 +114,10 @@ namespace Emulators
             if (value is string str)
             {
                 return double.TryParse(str, out _);
+            }
+            if (value is char c)
+            {
+                return double.TryParse(c.ToString(), out _);
             }
             return false;
         }
@@ -241,7 +267,7 @@ namespace Emulators
     public static class Constants
     {
         public const char vbNullChar = '\0';
-        public const char vbTab = '\t';
+        public const string vbTab = "\t";
         public const string vbCr = "\r";
         public const char vbNewLine = '\n';
         public const string vbLf = "\n";

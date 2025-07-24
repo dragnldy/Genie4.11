@@ -2,8 +2,7 @@
 using System.Collections;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
-using Microsoft.VisualBasic;
-using Microsoft.VisualBasic.CompilerServices;
+using Emulators;
 
 namespace GenieClient.Genie.Script
 {
